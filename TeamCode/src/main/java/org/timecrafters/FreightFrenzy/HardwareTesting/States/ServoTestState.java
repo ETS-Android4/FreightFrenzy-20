@@ -1,5 +1,7 @@
 package org.timecrafters.FreightFrenzy.HardwareTesting.States;
 
+import com.qualcomm.robotcore.hardware.Servo;
+
 import org.cyberarm.engine.V2.CyberarmState;
 
 public class ServoTestState extends CyberarmState {
