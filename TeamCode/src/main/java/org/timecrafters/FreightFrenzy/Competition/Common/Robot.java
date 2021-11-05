@@ -72,15 +72,16 @@ public class Robot {
     public static final double WHEEL_CIRCUMFERENCE = Math.PI * 8;
     public static final int COUNTS_PER_REVOLUTION = 1000;
 
-    public DcMotor driveFrontLeft, driveFrontRight, driveBackLeft, driveBackRight;
+    public DcMotor driveWarehouseLeft, driveWarehouseRight, driveGoalLeft, driveGoalRight,
+            collectorArmRiser, collectorArmBobbin, depositorArmRiser, depositorArmBobbin;
 
     // Collector
     public DcMotor collectorBobbin;
-    public Servo collectorDoor;
+    public Servo collectorDispenser;
 
     // Depositor
     public DcMotor depositorBobbin;
-    public Servo depositorDoor;
+    public Servo depositorDispenser;
 
     public Robot(CyberarmEngine engine) {
         this.engine = engine;
@@ -189,20 +190,22 @@ public class Robot {
     }
 
     private void initDrivetrain() {
-        driveFrontRight = engine.hardwareMap.dcMotor.get("driveFrontRight");
-        driveFrontLeft = engine.hardwareMap.dcMotor.get("driveFrontLeft");
-        driveBackRight = engine.hardwareMap.dcMotor.get("driveBackRight");
-        driveBackLeft = engine.hardwareMap.dcMotor.get("driveBackLeft");
+        driveWarehouseRight = engine.hardwareMap.dcMotor.get("driveWarehouseRight");
+        driveWarehouseLeft  = engine.hardwareMap.dcMotor.get("driveWarehouseLeft");
+        driveGoalRight      = engine.hardwareMap.dcMotor.get("driveGoalRight");
+        driveGoalLeft       = engine.hardwareMap.dcMotor.get("driveGoalLeft");
 
-        driveFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        driveBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        driveWarehouseLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        driveGoalLeft.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     private void initCollector() {
+        collectorDispenser = engine.hardwareMap.servo.get("collectorDispenser");
 
     }
 
     private void initDepositor(){
+        depositorDispenser = engine.hardwareMap.servo.get("depositorDispenser");
 
     }
 
