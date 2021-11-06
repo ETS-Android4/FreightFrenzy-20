@@ -29,10 +29,10 @@ public class DriveTrainTestState extends CyberarmState {
     //This one is set up to repeat every few milliseconds
     @Override
     public void exec() {
-
-        robot.driveFrontRight.setPower(-engine.gamepad1.right_stick_y * maxSpeed);
-        robot.driveBackRight.setPower(-engine.gamepad1.right_stick_y * maxSpeed);
-        robot.driveFrontLeft.setPower(-engine.gamepad1.left_stick_y * maxSpeed);
-        robot.driveBackLeft.setPower(-engine.gamepad1.left_stick_y * maxSpeed);
+//
+//        robot.driveFrontRight.setPower(-engine.gamepad1.right_stick_y * maxSpeed);
+//        robot.driveBackRight.setPower(-engine.gamepad1.right_stick_y * maxSpeed);
+//        robot.driveFrontLeft.setPower(-engine.gamepad1.left_stick_y * maxSpeed);
+//        robot.driveBackLeft.setPower(-engine.gamepad1.left_stick_y * maxSpeed);
     }
 }

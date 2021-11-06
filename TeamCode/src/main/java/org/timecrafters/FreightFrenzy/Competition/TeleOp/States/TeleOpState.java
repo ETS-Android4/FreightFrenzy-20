@@ -5,11 +5,14 @@ import org.timecrafters.FreightFrenzy.Competition.Common.Robot;
 
 public class TeleOpState extends CyberarmState {
     Robot robot;
-    double maxDriveSpeed;
+    double maxDriveSpeed, maxCollectorArmSpeed, maxDepositorArmSpeed;
+
 
     public TeleOpState(Robot robot) {
         this.robot = robot;
      maxDriveSpeed = 0.7;
+     maxCollectorArmSpeed = 0.5;
+     maxDepositorArmSpeed = .5;
     }
 
     @Override
@@ -20,8 +23,9 @@ public class TeleOpState extends CyberarmState {
     @Override
     public void exec() {
         robot.driveWarehouseLeft.setPower(-engine.gamepad1.left_stick_y * maxDriveSpeed);
-        robot.driveWarehouseRight.setPower(-engine.gamepad1.right_stick_y * maxDriveSpeed);
         robot.driveGoalLeft.setPower(-engine.gamepad1.left_stick_y * maxDriveSpeed);
+
+        robot.driveWarehouseRight.setPower(-engine.gamepad1.right_stick_y * maxDriveSpeed);
         robot.driveGoalRight.setPower(-engine.gamepad1.right_stick_y * maxDriveSpeed);
 
         if (engine.gamepad1.left_bumper){
@@ -35,6 +39,24 @@ public class TeleOpState extends CyberarmState {
         } else {
             robot.collectorDispenser.setPosition(0);
         }
+
+        robot.collectorArmBobbin.setPower(engine.gamepad1.right_trigger * maxCollectorArmSpeed);
+
+        if (engine.gamepad1.right_trigger <= 0){
+            robot.collectorArmBobbin.setPower(-engine.gamepad1.left_trigger * maxCollectorArmSpeed);
+        }
+
+
+        // GamePad 2
+        robot.depositorArmBobbin.setPower(engine.gamepad2.right_trigger * maxDepositorArmSpeed);
+
+        if (engine.gamepad2.right_trigger <= 0) {
+            robot.depositorArmBobbin.setPower(-engine.gamepad2.left_trigger * maxDepositorArmSpeed);
+        }
+
+
+
+
     }
 
 

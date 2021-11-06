@@ -8,7 +8,7 @@ import org.timecrafters.UltimateGoal.Competition.Autonomous.DriveToCoordinates;
 import org.timecrafters.UltimateGoal.Competition.Autonomous.Face;
 import org.timecrafters.UltimateGoal.Competition.Robot;
 @Disabled
-@TeleOp (name = "TeleOp",group = "comp")
+//@TeleOp (name = "TeleOp",group = "comp")
 public class TeleOpEngine extends CyberarmEngine {
 
     private Robot robot;

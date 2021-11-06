@@ -76,11 +76,9 @@ public class Robot {
             collectorArmRiser, collectorArmBobbin, depositorArmRiser, depositorArmBobbin;
 
     // Collector
-    public DcMotor collectorBobbin;
     public Servo collectorDispenser;
 
     // Depositor
-    public DcMotor depositorBobbin;
     public Servo depositorDispenser;
 
     public Robot(CyberarmEngine engine) {
@@ -93,8 +91,8 @@ public class Robot {
         initCollector();
         initDepositor();
         initCarousel();
-        initVuforia();
-        initTensorflow();
+//        initVuforia();
+//        initTensorflow();
     }
 
     public double heading() {
@@ -195,17 +193,23 @@ public class Robot {
         driveGoalRight      = engine.hardwareMap.dcMotor.get("driveGoalRight");
         driveGoalLeft       = engine.hardwareMap.dcMotor.get("driveGoalLeft");
 
-        driveWarehouseLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        driveGoalLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        driveWarehouseLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        driveWarehouseRight.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        driveGoalLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        driveGoalRight.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     private void initCollector() {
+        collectorArmBobbin = engine.hardwareMap.dcMotor.get("collectorArmBobbin");
         collectorDispenser = engine.hardwareMap.servo.get("collectorDispenser");
-
+        collectorArmBobbin.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     private void initDepositor(){
         depositorDispenser = engine.hardwareMap.servo.get("depositorDispenser");
+        depositorArmBobbin = engine.hardwareMap.dcMotor.get("depositorArmBobbin");
+        depositorArmBobbin.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
 
