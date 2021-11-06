@@ -10,9 +10,9 @@ public class TeleOpState extends CyberarmState {
 
     public TeleOpState(Robot robot) {
         this.robot = robot;
-     maxDriveSpeed = 0.7;
-     maxCollectorArmSpeed = 0.5;
-     maxDepositorArmSpeed = .5;
+     maxDriveSpeed = 1;
+     maxCollectorArmSpeed = 0.7;
+     maxDepositorArmSpeed = 0.7;
     }
 
     @Override
