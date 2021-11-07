@@ -28,11 +28,6 @@ public class TeleOpState extends CyberarmState {
         robot.driveWarehouseRight.setPower(-engine.gamepad1.right_stick_y * maxDriveSpeed);
         robot.driveGoalRight.setPower(-engine.gamepad1.right_stick_y * maxDriveSpeed);
 
-        if (engine.gamepad1.left_bumper){
-            robot.depositorDispenser.setPosition(.5);
-        } else {
-            robot.depositorDispenser.setPosition(0);
-        }
 
         if (engine.gamepad1.right_bumper){
             robot.collectorDispenser.setPosition(.5);
@@ -52,6 +47,13 @@ public class TeleOpState extends CyberarmState {
 
         if (engine.gamepad2.right_trigger <= 0) {
             robot.depositorArmBobbin.setPower(-engine.gamepad2.left_trigger * maxDepositorArmSpeed);
+        }
+
+
+        if (engine.gamepad2.left_bumper){
+            robot.depositorDispenser.setPosition(.5);
+        } else {
+            robot.depositorDispenser.setPosition(0);
         }
 
 
