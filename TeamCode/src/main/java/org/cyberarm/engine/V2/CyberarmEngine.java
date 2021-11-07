@@ -3,6 +3,7 @@ package org.cyberarm.engine.V2;
 import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -15,12 +16,14 @@ public abstract class CyberarmEngine extends OpMode {
 
   public static CyberarmEngine instance;
   //Array To Hold States
-  private CopyOnWriteArrayList<CyberarmState> cyberarmStates = new CopyOnWriteArrayList<>();
+  final private CopyOnWriteArrayList<CyberarmState> cyberarmStates = new CopyOnWriteArrayList<>();
   private int activeStateIndex = 0;
   private boolean isRunning;
 
-  private static String TAG = "PROGRAM.ENGINE";
+  private final static String TAG = "PROGRAM.ENGINE";
   public boolean showStateChildrenListInTelemetry = false;
+
+  private GamepadChecker gamepadCheckerGamepad1, gamepadCheckerGamepad2;
 
   /**
    * Called when INIT button on Driver Station is pushed
@@ -29,6 +32,8 @@ public abstract class CyberarmEngine extends OpMode {
   public void init() {
     CyberarmEngine.instance = this;
     isRunning = false;
+    gamepadCheckerGamepad1 = new GamepadChecker(this, gamepad1);
+    gamepadCheckerGamepad2 = new GamepadChecker(this, gamepad2);
 
     setup();
 
@@ -43,12 +48,12 @@ public abstract class CyberarmEngine extends OpMode {
    * Setup states for engine to use
    * For example:
    * <pre>
-   * @<code>
+   * {@code
    *   public void setup() {
    *     addState(new TestState());
    *     addState(new AnotherState(100, 500));
    *   }
-   * </code>
+   * }
    * </pre>
    */
   public abstract void setup();
@@ -102,6 +107,9 @@ public abstract class CyberarmEngine extends OpMode {
     } else {
       stateTelemetry(state);
     }
+
+    gamepadCheckerGamepad1.update();
+    gamepadCheckerGamepad2.update();
   }
 
   /**
@@ -167,14 +175,11 @@ public abstract class CyberarmEngine extends OpMode {
     final CyberarmState finalState = state;
 //    if (state.isRunning()) { return; } // Assume that we have already started running this state
 
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        finalState.prestart();
-        finalState.start();
-        finalState.startTime = System.currentTimeMillis();
-        finalState.run();
-      }
+    new Thread(() -> {
+      finalState.prestart();
+      finalState.start();
+      finalState.startTime = System.currentTimeMillis();
+      finalState.run();
     }).start();
 
     for (CyberarmState kid : state.children) {
@@ -199,7 +204,7 @@ public abstract class CyberarmEngine extends OpMode {
    * Inserts state after the query state plus an offset to ensure logical insertion
    * @param query State to add state after
    * @param state State to be inserted
-   * @return
+   * @return CyberarmState
    */
   public CyberarmState insertState(CyberarmState query, CyberarmState state) {
     int index = cyberarmStates.indexOf(query) + query.insertOffset;
@@ -211,6 +216,48 @@ public abstract class CyberarmEngine extends OpMode {
     if (isRunning()) { initState(state); }
 
     return state;
+  }
+
+  private void buttonDownForStates(CyberarmState state, Gamepad gamepad, String button) {
+    state.buttonDown(gamepad, button);
+
+    for (CyberarmState child : state.children) {
+      child.buttonDown(gamepad, button);
+    }
+  }
+
+  private void buttonUpForStates(CyberarmState state, Gamepad gamepad, String button) {
+    state.buttonUp(gamepad, button);
+
+    for (CyberarmState child : state.children) {
+      child.buttonUp(gamepad, button);
+    }
+  }
+
+  /**
+   * Called by GamepadChecker when it detects that a gamepad button has been pressed
+   * @param gamepad Gamepad
+   * @param button String
+   */
+  protected void buttonDown(Gamepad gamepad, String button) {
+    try {
+      buttonDownForStates(cyberarmStates.get(activeStateIndex), gamepad, button);
+    } catch(IndexOutOfBoundsException e){
+      /* loop will handle this in a few milliseconds */
+    }
+  }
+
+  /**
+   * Called by GamepadChecker when it detects that a gamepad button has been released
+   * @param gamepad Gamepad
+   * @param button String
+   */
+  protected void buttonUp(Gamepad gamepad, String button) {
+    try {
+      buttonUpForStates(cyberarmStates.get(activeStateIndex), gamepad, button);
+    } catch(IndexOutOfBoundsException e){
+      /* loop will handle this in a few milliseconds */
+    }
   }
 
   /**
