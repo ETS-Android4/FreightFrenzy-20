@@ -22,6 +22,9 @@ public class TeleOpState extends CyberarmState {
 
     @Override
     public void exec() {
+        // GamePad 1
+
+        // TankDrive
         robot.driveWarehouseLeft.setPower(-engine.gamepad1.left_stick_y * maxDriveSpeed);
         robot.driveGoalLeft.setPower(-engine.gamepad1.left_stick_y * maxDriveSpeed);
 
