@@ -2,6 +2,8 @@ package org.cyberarm.engine.V2;
 
 import android.util.Log;
 
+import com.qualcomm.robotcore.hardware.Gamepad;
+
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -63,6 +65,23 @@ public abstract class CyberarmState implements Runnable {
    * Called when Engine is finished
    */
   public void stop() {
+  }
+
+  /**
+   * Called when GamepadChecker detects that a gamepad button has been pressed
+   * @param gamepad Gamepad
+   * @param button String
+   */
+  public void buttonDown(Gamepad gamepad, String button) {
+  }
+
+
+  /**
+   * Called when GamepadChecker detects that a gamepad button has been released
+   * @param gamepad Gamepad
+   * @param button String
+   */
+  public void buttonUp(Gamepad gamepad, String button) {
   }
 
   /**
@@ -139,7 +158,7 @@ public abstract class CyberarmState implements Runnable {
 
   /**
    * Set whether state has finished or not
-   * @param value
+   * @param value boolean
    */
   public void setHasFinished(boolean value) {
     hasFinished = value;
