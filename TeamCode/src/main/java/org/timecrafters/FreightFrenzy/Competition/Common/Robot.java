@@ -6,6 +6,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -78,8 +79,12 @@ public class Robot {
     // Collector
     public Servo collectorDispenser;
 
+    public CRServo turretServo1;
+
     // Depositor
     public Servo depositorDispenser;
+
+    public CRServo turretServo2;
 
     public Robot(CyberarmEngine engine) {
         this.engine = engine;
@@ -204,13 +209,14 @@ public class Robot {
         collectorArmBobbin = engine.hardwareMap.dcMotor.get("collectorArmBobbin");
         collectorDispenser = engine.hardwareMap.servo.get("collectorDispenser");
         collectorArmBobbin.setDirection(DcMotorSimple.Direction.FORWARD);
+        turretServo1 = engine.hardwareMap.crservo.get("turretServo1");
     }
 
     private void initDepositor(){
         depositorDispenser = engine.hardwareMap.servo.get("depositorDispenser");
         depositorArmBobbin = engine.hardwareMap.dcMotor.get("depositorArmBobbin");
         depositorArmBobbin.setDirection(DcMotorSimple.Direction.REVERSE);
-
+        turretServo2 = engine.hardwareMap.crservo.get("turretServo2");
     }
 
     private void initCarousel() {
