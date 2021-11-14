@@ -78,13 +78,14 @@ public class Robot {
 
     // Collector
     public Servo collectorDispenser;
-
     public CRServo turretServo1;
 
     // Depositor
     public Servo depositorDispenser;
+    // Depositor, and carousel
+    public CRServo turretServo2, carouselWheel, collectorOrange, collectorWhite;
 
-    public CRServo turretServo2;
+
 
     public Robot(CyberarmEngine engine) {
         this.engine = engine;
@@ -210,6 +211,9 @@ public class Robot {
         collectorDispenser = engine.hardwareMap.servo.get("collectorDispenser");
         collectorArmBobbin.setDirection(DcMotorSimple.Direction.FORWARD);
         turretServo1 = engine.hardwareMap.crservo.get("turretServo1");
+        collectorArmRiser = engine.hardwareMap.dcMotor.get("collectorArmRiser");
+        collectorArmRiser.setDirection(DcMotorSimple.Direction.FORWARD);
+        collectorOrange = engine.hardwareMap.crservo.get("collectorOrange");
     }
 
     private void initDepositor(){
@@ -217,10 +221,13 @@ public class Robot {
         depositorArmBobbin = engine.hardwareMap.dcMotor.get("depositorArmBobbin");
         depositorArmBobbin.setDirection(DcMotorSimple.Direction.REVERSE);
         turretServo2 = engine.hardwareMap.crservo.get("turretServo2");
+        depositorArmRiser = engine.hardwareMap.dcMotor.get("depositorArmRiser");
+        depositorArmRiser.setDirection(DcMotorSimple.Direction.FORWARD);
+        collectorWhite = engine.hardwareMap.crservo.get("collectorWhite");
     }
 
     private void initCarousel() {
-
+        carouselWheel = engine.hardwareMap.crservo.get("carouselWheel");
     }
 
     private void initVuforia() {
