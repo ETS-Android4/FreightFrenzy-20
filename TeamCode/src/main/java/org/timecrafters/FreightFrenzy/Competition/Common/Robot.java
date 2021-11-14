@@ -213,6 +213,7 @@ public class Robot {
         turretServo1 = engine.hardwareMap.crservo.get("turretServo1");
         collectorArmRiser = engine.hardwareMap.dcMotor.get("collectorArmRiser");
         collectorArmRiser.setDirection(DcMotorSimple.Direction.FORWARD);
+        collectorArmRiser.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         collectorOrange = engine.hardwareMap.crservo.get("collectorOrange");
     }
 
@@ -223,6 +224,7 @@ public class Robot {
         turretServo2 = engine.hardwareMap.crservo.get("turretServo2");
         depositorArmRiser = engine.hardwareMap.dcMotor.get("depositorArmRiser");
         depositorArmRiser.setDirection(DcMotorSimple.Direction.FORWARD);
+        depositorArmRiser.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         collectorWhite = engine.hardwareMap.crservo.get("collectorWhite");
     }
 

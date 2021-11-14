@@ -1,5 +1,7 @@
 package org.timecrafters.FreightFrenzy.Competition.TeleOp.States;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 import org.cyberarm.engine.V2.CyberarmState;
 import org.timecrafters.FreightFrenzy.Competition.Common.Robot;
 
@@ -41,10 +43,10 @@ public class TeleOpState extends CyberarmState {
             robot.collectorDispenser.setPosition(0);
         }
         //  if one of triggers pressed arm extends or unextends
-        robot.collectorArmBobbin.setPower(engine.gamepad1.right_trigger * maxCollectorArmSpeed);
+        robot.collectorArmBobbin.setPower(engine.gamepad1.left_trigger * maxCollectorArmSpeed);
 
-        if (engine.gamepad1.right_trigger <= 0){
-            robot.collectorArmBobbin.setPower(-engine.gamepad1.left_trigger * maxCollectorArmSpeed);
+        if (engine.gamepad1.left_trigger <= 0){
+            robot.collectorArmBobbin.setPower(-engine.gamepad1.right_trigger * maxCollectorArmSpeed);
         }
 
         //  if either of these buttons... move the servo
@@ -52,11 +54,11 @@ public class TeleOpState extends CyberarmState {
         if (engine.gamepad1.dpad_right || engine.gamepad1.dpad_left) {
 
             if (engine.gamepad1.dpad_right) {
-                robot.turretServo1.setPower(1);
+                robot.turretServo1.setPower(-1);
             }
 
             if (engine.gamepad1.dpad_left) {
-                robot.turretServo1.setPower(-1);
+                robot.turretServo1.setPower(1);
             }
         }
 
@@ -110,10 +112,10 @@ public class TeleOpState extends CyberarmState {
         // GamePad 2
 
         // if triggers are pressed then arm extends or unextends
-        robot.depositorArmBobbin.setPower(engine.gamepad2.right_trigger * maxDepositorArmSpeed);
+        robot.depositorArmBobbin.setPower(engine.gamepad2.left_trigger * maxDepositorArmSpeed);
 
-        if (engine.gamepad2.right_trigger <= 0) {
-            robot.depositorArmBobbin.setPower(-engine.gamepad2.left_trigger * maxDepositorArmSpeed);
+        if (engine.gamepad2.left_trigger <= 0) {
+            robot.depositorArmBobbin.setPower(-engine.gamepad2.right_trigger * maxDepositorArmSpeed);
         }
 
         // if b is pressed then depositor door opens, if not pressed not opening.
@@ -130,11 +132,11 @@ public class TeleOpState extends CyberarmState {
         if (engine.gamepad2.dpad_right || engine.gamepad2.dpad_left) {
 
             if (engine.gamepad2.dpad_right) {
-                robot.turretServo2.setPower(1);
+                robot.turretServo2.setPower(-1);
             }
 
             if (engine.gamepad2.dpad_left) {
-                robot.turretServo2.setPower(-1);
+                robot.turretServo2.setPower(1);
             }
         }
         //  if neither of these buttons power off
