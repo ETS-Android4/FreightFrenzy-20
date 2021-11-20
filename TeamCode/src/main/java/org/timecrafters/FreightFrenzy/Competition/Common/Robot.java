@@ -74,16 +74,16 @@ public class Robot {
     public static final int COUNTS_PER_REVOLUTION = 1000;
 
     public DcMotor driveWarehouseLeft, driveWarehouseRight, driveGoalLeft, driveGoalRight,
-            collectorArmRiser, collectorArmBobbin, depositorArmRiser, depositorArmBobbin;
+            orangeArmRiser, orangeArmBobbin, whiteArmRiser, whiteArmBobbin;
 
     // Collector
-    public Servo collectorDispenser;
-    public CRServo turretServo1;
+    public Servo orangeDispenser;
+    public CRServo turretServoOrange;
 
     // Depositor
-    public Servo depositorDispenser;
+    public Servo whiteDispenser;
     // Depositor, and carousel
-    public CRServo turretServo2, carouselWheel, collectorOrange, collectorWhite;
+    public CRServo turretServoWhite, carouselWheel, collectorOrange, collectorWhite;
 
 
 
@@ -207,24 +207,24 @@ public class Robot {
     }
 
     private void initCollector() {
-        collectorArmBobbin = engine.hardwareMap.dcMotor.get("collectorArmBobbin");
-        collectorDispenser = engine.hardwareMap.servo.get("collectorDispenser");
-        collectorArmBobbin.setDirection(DcMotorSimple.Direction.FORWARD);
-        turretServo1 = engine.hardwareMap.crservo.get("turretServo1");
-        collectorArmRiser = engine.hardwareMap.dcMotor.get("collectorArmRiser");
-        collectorArmRiser.setDirection(DcMotorSimple.Direction.FORWARD);
-        collectorArmRiser.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        orangeArmBobbin = engine.hardwareMap.dcMotor.get("orangeArmBobbin");
+        orangeDispenser = engine.hardwareMap.servo.get("orangeDispenser");
+        orangeArmBobbin.setDirection(DcMotorSimple.Direction.FORWARD);
+        turretServoOrange = engine.hardwareMap.crservo.get("turretServoOrange");
+        orangeArmRiser = engine.hardwareMap.dcMotor.get("orangeArmRiser");
+        orangeArmRiser.setDirection(DcMotorSimple.Direction.FORWARD);
+        orangeArmRiser.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         collectorOrange = engine.hardwareMap.crservo.get("collectorOrange");
     }
 
     private void initDepositor(){
-        depositorDispenser = engine.hardwareMap.servo.get("depositorDispenser");
-        depositorArmBobbin = engine.hardwareMap.dcMotor.get("depositorArmBobbin");
-        depositorArmBobbin.setDirection(DcMotorSimple.Direction.REVERSE);
-        turretServo2 = engine.hardwareMap.crservo.get("turretServo2");
-        depositorArmRiser = engine.hardwareMap.dcMotor.get("depositorArmRiser");
-        depositorArmRiser.setDirection(DcMotorSimple.Direction.FORWARD);
-        depositorArmRiser.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        whiteDispenser = engine.hardwareMap.servo.get("whiteDispenser");
+        whiteArmBobbin = engine.hardwareMap.dcMotor.get("whiteArmBobbin");
+        whiteArmBobbin.setDirection(DcMotorSimple.Direction.REVERSE);
+        turretServoWhite = engine.hardwareMap.crservo.get("turretServoWhite");
+        whiteArmRiser = engine.hardwareMap.dcMotor.get("whiteArmRiser");
+        whiteArmRiser.setDirection(DcMotorSimple.Direction.FORWARD);
+        whiteArmRiser.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         collectorWhite = engine.hardwareMap.crservo.get("collectorWhite");
     }
 

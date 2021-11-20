@@ -8,18 +8,24 @@ import org.timecrafters.FreightFrenzy.Competition.Common.Robot;
 public class TeleOpState extends CyberarmState {
     Robot robot;
     double maxDriveSpeed, maxCollectorArmSpeed, maxDepositorArmSpeed;
+    int maxArmTravelDistance;
 
 
     public TeleOpState(Robot robot) {
         this.robot = robot;
      maxDriveSpeed = 1;
-     maxCollectorArmSpeed = 0.7;
-     maxDepositorArmSpeed = 0.7;
+     maxCollectorArmSpeed = 0.8;
+     maxDepositorArmSpeed = 0.8;
+     maxArmTravelDistance = 4000;
     }
 
     @Override
     public void start() {
         super.start();
+        // FIXME: Don't reset when doing autonomous stuff
+        // FIXME: Fix unable to retract if reset mid-match
+        robot.whiteArmBobbin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.whiteArmBobbin.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     @Override
@@ -35,18 +41,18 @@ public class TeleOpState extends CyberarmState {
 
         // dispenser powered
         if (engine.gamepad1.b){
-            robot.collectorDispenser.setPosition(.5);
+            robot.orangeDispenser.setPosition(.5);
         }
 
         // if not pressed dispenser off
         else {
-            robot.collectorDispenser.setPosition(0);
+            robot.orangeDispenser.setPosition(0);
         }
         //  if one of triggers pressed arm extends or unextends
-        robot.collectorArmBobbin.setPower(engine.gamepad1.left_trigger * maxCollectorArmSpeed);
+        robot.orangeArmBobbin.setPower(engine.gamepad1.left_trigger * maxCollectorArmSpeed);
 
         if (engine.gamepad1.left_trigger <= 0){
-            robot.collectorArmBobbin.setPower(-engine.gamepad1.right_trigger * maxCollectorArmSpeed);
+            robot.orangeArmBobbin.setPower(-engine.gamepad1.right_trigger * maxCollectorArmSpeed);
         }
 
         //  if either of these buttons... move the servo
@@ -54,33 +60,33 @@ public class TeleOpState extends CyberarmState {
         if (engine.gamepad1.dpad_right || engine.gamepad1.dpad_left) {
 
             if (engine.gamepad1.dpad_right) {
-                robot.turretServo1.setPower(-1);
+                robot.turretServoOrange.setPower(-1);
             }
 
             if (engine.gamepad1.dpad_left) {
-                robot.turretServo1.setPower(1);
+                robot.turretServoOrange.setPower(1);
             }
         }
 
         //  if neither of these buttons... power off
         else {
-            robot.turretServo1.setPower(0);
+            robot.turretServoOrange.setPower(0);
         }
 
         // if dpad verticles pressed arm rises or lowers...
         if (engine.gamepad1.dpad_up || engine.gamepad1.dpad_down) {
 
             if (engine.gamepad1.dpad_up) {
-                robot.collectorArmRiser.setPower(1);
+                robot.orangeArmRiser.setPower(1);
             }
 
             if (engine.gamepad1.dpad_down) {
-                robot.collectorArmRiser.setPower(-1);
+                robot.orangeArmRiser.setPower(-1);
             }
         }
         // nothing pressed nothing move...
         else {
-            robot.collectorArmRiser.setPower(0);
+            robot.orangeArmRiser.setPower(0);
         }
 
         // if bumpers pressed intake wheel move...
@@ -112,19 +118,27 @@ public class TeleOpState extends CyberarmState {
         // GamePad 2
 
         // if triggers are pressed then arm extends or unextends
-        robot.depositorArmBobbin.setPower(engine.gamepad2.left_trigger * maxDepositorArmSpeed);
+        if (robot.whiteArmBobbin.getCurrentPosition() <= maxArmTravelDistance && engine.gamepad2.left_trigger > 0) {
 
-        if (engine.gamepad2.left_trigger <= 0) {
-            robot.depositorArmBobbin.setPower(-engine.gamepad2.right_trigger * maxDepositorArmSpeed);
+            robot.whiteArmBobbin.setPower(engine.gamepad2.left_trigger * maxDepositorArmSpeed);
+        } else {
+            if (engine.gamepad2.left_trigger <= 0 && robot.whiteArmBobbin.getCurrentPosition() >= 0) {
+                robot.whiteArmBobbin.setPower(-engine.gamepad2.right_trigger * maxDepositorArmSpeed);
+            } else {
+                robot.whiteArmBobbin.setPower(0);
+            }
+
         }
+
+
 
         // if b is pressed then depositor door opens, if not pressed not opening.
         if (engine.gamepad2.b){
-            robot.depositorDispenser.setPosition(.5);
+            robot.whiteDispenser.setPosition(.5);
         }
 
         else {
-            robot.depositorDispenser.setPosition(0);
+            robot.whiteDispenser.setPosition(0);
         }
 
         //  if either of these buttons move the servo
@@ -132,32 +146,32 @@ public class TeleOpState extends CyberarmState {
         if (engine.gamepad2.dpad_right || engine.gamepad2.dpad_left) {
 
             if (engine.gamepad2.dpad_right) {
-                robot.turretServo2.setPower(-1);
+                robot.turretServoWhite.setPower(-1);
             }
 
             if (engine.gamepad2.dpad_left) {
-                robot.turretServo2.setPower(1);
+                robot.turretServoWhite.setPower(1);
             }
         }
         //  if neither of these buttons power off
         else {
-            robot.turretServo2.setPower(0);
+            robot.turretServoWhite.setPower(0);
         }
 
         // if dpad verticles pressed arm rises or lowers
         if (engine.gamepad2.dpad_down || engine.gamepad2.dpad_up) {
 
             if (engine.gamepad2.dpad_up) {
-                robot.depositorArmRiser.setPower(1);
+                robot.whiteArmRiser.setPower(-1);
             }
 
             if (engine.gamepad2.dpad_down) {
-                robot.depositorArmRiser.setPower(-1);
+                robot.whiteArmRiser.setPower(1);
             }
         }
         // nothing pressed nothing move...
         else {
-            robot.depositorArmRiser.setPower(0);
+            robot.whiteArmRiser.setPower(0);
         }
 
         if (engine.gamepad2.left_bumper || engine.gamepad2.right_bumper) {
@@ -178,8 +192,8 @@ public class TeleOpState extends CyberarmState {
     }
 
 
-
-
-
-
+    @Override
+    public void telemetry() {
+        engine.telemetry.addData("white arm extension", robot.whiteArmBobbin.getCurrentPosition());
+    }
 }
