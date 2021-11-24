@@ -26,6 +26,8 @@ public class TeleOpState extends CyberarmState {
         // FIXME: Fix unable to retract if reset mid-match
         robot.whiteArmBobbin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.whiteArmBobbin.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.orangeArmBobbin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.orangeArmBobbin.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     @Override
@@ -48,11 +50,17 @@ public class TeleOpState extends CyberarmState {
         else {
             robot.orangeDispenser.setPosition(0);
         }
-        //  if one of triggers pressed arm extends or unextends
-        robot.orangeArmBobbin.setPower(engine.gamepad1.left_trigger * maxCollectorArmSpeed);
+        //  if one of triggers pressed arm extends or unextends, there is also a limit on how far arm can extend
+        if (robot.orangeArmBobbin.getCurrentPosition() <= maxArmTravelDistance && engine.gamepad1.left_trigger > 0) {
 
-        if (engine.gamepad1.left_trigger <= 0){
-            robot.orangeArmBobbin.setPower(-engine.gamepad1.right_trigger * maxCollectorArmSpeed);
+            robot.orangeArmBobbin.setPower(engine.gamepad1.left_trigger * maxDepositorArmSpeed);
+        } else {
+            if (engine.gamepad1.left_trigger <= 0 && robot.orangeArmBobbin.getCurrentPosition() >= 0) {
+                robot.orangeArmBobbin.setPower(-engine.gamepad1.right_trigger * maxDepositorArmSpeed);
+            } else {
+                robot.orangeArmBobbin.setPower(0);
+            }
+
         }
 
         //  if either of these buttons... move the servo
@@ -117,7 +125,7 @@ public class TeleOpState extends CyberarmState {
 
         // GamePad 2
 
-        // if triggers are pressed then arm extends or unextends
+        // if triggers are pressed then arm extends or unextends, there is also a limit on how far arm can extend
         if (robot.whiteArmBobbin.getCurrentPosition() <= maxArmTravelDistance && engine.gamepad2.left_trigger > 0) {
 
             robot.whiteArmBobbin.setPower(engine.gamepad2.left_trigger * maxDepositorArmSpeed);
