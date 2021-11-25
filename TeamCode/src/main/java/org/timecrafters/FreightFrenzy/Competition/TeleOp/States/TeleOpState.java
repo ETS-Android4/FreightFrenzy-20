@@ -14,8 +14,8 @@ public class TeleOpState extends CyberarmState {
     public TeleOpState(Robot robot) {
         this.robot = robot;
      maxDriveSpeed = 1;
-     maxCollectorArmSpeed = 0.1;
-     maxDepositorArmSpeed = 0.1;
+     maxCollectorArmSpeed = 1;
+     maxDepositorArmSpeed = 1;
      maxArmTravelDistance = 4000;
     }
 
