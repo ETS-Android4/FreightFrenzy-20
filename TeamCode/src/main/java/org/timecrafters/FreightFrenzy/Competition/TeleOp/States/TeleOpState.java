@@ -1,6 +1,8 @@
 package org.timecrafters.FreightFrenzy.Competition.TeleOp.States;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.cyberarm.engine.V2.CyberarmState;
 import org.timecrafters.FreightFrenzy.Competition.Common.Robot;
@@ -8,22 +10,25 @@ import org.timecrafters.FreightFrenzy.Competition.Common.Robot;
 public class TeleOpState extends CyberarmState {
     Robot robot;
     double maxDriveSpeed, maxCollectorArmSpeed, maxDepositorArmSpeed;
-    int maxArmTravelDistance;
-
+    int maxArmTravelDistance, minArmTravelDistance;
+    boolean armLimitToggle = false, orangeCollectorToggle = false, whiteCollectorToggle = false;
+    boolean allianceRed = true;
 
     public TeleOpState(Robot robot) {
         this.robot = robot;
      maxDriveSpeed = 1;
      maxCollectorArmSpeed = 1;
      maxDepositorArmSpeed = 1;
+     minArmTravelDistance = 0;
      maxArmTravelDistance = 4000;
+
     }
+
 
     @Override
     public void start() {
         super.start();
         // FIXME: Don't reset when doing autonomous stuff
-        // FIXME: Fix unable to retract if reset mid-match
         robot.whiteArmBobbin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.whiteArmBobbin.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.orangeArmBobbin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -55,7 +60,7 @@ public class TeleOpState extends CyberarmState {
 
             robot.orangeArmBobbin.setPower(engine.gamepad1.left_trigger * maxDepositorArmSpeed);
         } else {
-            if (engine.gamepad1.left_trigger <= 0 && robot.orangeArmBobbin.getCurrentPosition() >= 0) {
+            if (engine.gamepad1.left_trigger <= 0 && robot.orangeArmBobbin.getCurrentPosition() >= minArmTravelDistance) {
                 robot.orangeArmBobbin.setPower(-engine.gamepad1.right_trigger * maxDepositorArmSpeed);
             } else {
                 robot.orangeArmBobbin.setPower(0);
@@ -65,7 +70,7 @@ public class TeleOpState extends CyberarmState {
 
         //  if either of these buttons... move the servo
         //  turretServo1 = orange
-        if (engine.gamepad1.dpad_right || engine.gamepad1.dpad_left) {
+        /*if (engine.gamepad1.dpad_right || engine.gamepad1.dpad_left) {
 
             if (engine.gamepad1.dpad_right) {
                 robot.turretServoOrange.setPower(-1);
@@ -75,11 +80,11 @@ public class TeleOpState extends CyberarmState {
                 robot.turretServoOrange.setPower(1);
             }
         }
-
         //  if neither of these buttons... power off
         else {
             robot.turretServoOrange.setPower(0);
-        }
+        }*/
+        turretOrbitControl(engine.gamepad1, robot.turretServoOrange, allianceRed);
 
         // if dpad verticles pressed arm rises or lowers...
         if (engine.gamepad1.dpad_up || engine.gamepad1.dpad_down) {
@@ -95,22 +100,6 @@ public class TeleOpState extends CyberarmState {
         // nothing pressed nothing move...
         else {
             robot.orangeArmRiser.setPower(0);
-        }
-
-        // if bumpers pressed intake wheel move...
-
-        if (engine.gamepad1.right_bumper || engine.gamepad1.left_bumper) {
-            if (engine.gamepad1.right_bumper) {
-                robot.collectorOrange.setPower(1);
-            }
-
-            if (engine.gamepad1.left_bumper) {
-                robot.collectorOrange.setPower(-1);
-            }
-        }
-        // no bumpers pressed no wheel move...
-        else {
-            robot.collectorOrange.setPower(0);
         }
 
         // button x pressed carousel wheel move.
@@ -130,7 +119,7 @@ public class TeleOpState extends CyberarmState {
 
             robot.whiteArmBobbin.setPower(engine.gamepad2.left_trigger * maxDepositorArmSpeed);
         } else {
-            if (engine.gamepad2.left_trigger <= 0 && robot.whiteArmBobbin.getCurrentPosition() >= 0) {
+            if (engine.gamepad2.left_trigger <= 0 && robot.whiteArmBobbin.getCurrentPosition() >= minArmTravelDistance) {
                 robot.whiteArmBobbin.setPower(-engine.gamepad2.right_trigger * maxDepositorArmSpeed);
             } else {
                 robot.whiteArmBobbin.setPower(0);
@@ -151,21 +140,21 @@ public class TeleOpState extends CyberarmState {
 
         //  if either of these buttons move the servo
         //  turretServo2 = white
-        if (engine.gamepad2.dpad_right || engine.gamepad2.dpad_left) {
-
-            if (engine.gamepad2.dpad_right) {
-                robot.turretServoWhite.setPower(-1);
-            }
-
-            if (engine.gamepad2.dpad_left) {
-                robot.turretServoWhite.setPower(1);
-            }
-        }
-        //  if neither of these buttons power off
-        else {
-            robot.turretServoWhite.setPower(0);
-        }
-
+//        if (engine.gamepad2.dpad_right || engine.gamepad2.dpad_left) {
+//
+//            if (engine.gamepad2.dpad_right) {
+//                robot.turretServoWhite.setPower(-1);
+//            }
+//
+//            if (engine.gamepad2.dpad_left) {
+//                robot.turretServoWhite.setPower(1);
+//            }
+//        }
+//        //  if neither of these buttons power off
+//        else {
+//            robot.turretServoWhite.setPower(0);
+//        }
+        turretOrbitControl(engine.gamepad2, robot.turretServoWhite, allianceRed);
         // if dpad verticles pressed arm rises or lowers
         if (engine.gamepad2.dpad_down || engine.gamepad2.dpad_up) {
 
@@ -181,27 +170,116 @@ public class TeleOpState extends CyberarmState {
         else {
             robot.whiteArmRiser.setPower(0);
         }
-
-        if (engine.gamepad2.left_bumper || engine.gamepad2.right_bumper) {
-
-            if (engine.gamepad2.left_bumper) {
-                robot.collectorWhite.setPower(-1);
-            }
-
-            if (engine.gamepad2.right_bumper) {
-                robot.collectorWhite.setPower(1);
-            }
-        }
-
-        else {
-            robot.collectorWhite.setPower(0);
-        }
-
     }
 
 
     @Override
     public void telemetry() {
         engine.telemetry.addData("white arm extension", robot.whiteArmBobbin.getCurrentPosition());
+        engine.telemetry.addData("orange arm extension", robot.orangeArmBobbin.getCurrentPosition());
+
+        engine.telemetry.addData("arm limit toggle", armLimitToggle);
+        engine.telemetry.addData("collector toggle orange", orangeCollectorToggle);
+        engine.telemetry.addData("collector toggle white", whiteCollectorToggle);
+
+    }
+
+    @Override
+    public void buttonUp(Gamepad gamepad, String button) {
+        // this is a toggle of a limit for arm extension in the case of the robot crashes
+        // in the middle of the game we can bring the arm back in and extend and reset its position.
+        System.out.println("GamePad: " + gamepad.getGamepadId() + " Button: " + button);
+
+        if (button.equals("y")) {
+            System.out.println("Y has been pressed! (" + armLimitToggle + ")");
+
+            if (!armLimitToggle) {
+                armLimitToggle = true;
+                minArmTravelDistance = -8500;
+                maxArmTravelDistance = 8500;
+            } else {
+                armLimitToggle = false;
+                minArmTravelDistance = 0;
+                maxArmTravelDistance = 4000;
+                robot.orangeArmBobbin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.whiteArmBobbin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.orangeArmBobbin.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                robot.whiteArmBobbin.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            }
+        }
+
+        if (gamepad == engine.gamepad1) {
+            switch (button) {
+                case "left_bumper":
+                    if (orangeCollectorToggle) {
+                        orangeCollectorToggle = false;
+                        robot.collectorOrange.setPower(0);
+                    } else {
+                        orangeCollectorToggle = true;
+                        robot.collectorOrange.setPower(1);
+                    }
+                    break;
+                case "right_bumper":
+                    if (orangeCollectorToggle) {
+                        orangeCollectorToggle = false;
+                        robot.collectorOrange.setPower(0);
+                    } else {
+                        orangeCollectorToggle = true;
+                        robot.collectorOrange.setPower(-1);
+                    }
+                    break;
+            }
+        }
+
+        if (gamepad == engine.gamepad2) {
+            switch (button) {
+
+                case "left_bumper":
+                    if (whiteCollectorToggle) {
+                        whiteCollectorToggle = false;
+                        robot.collectorWhite.setPower(0);
+                    } else {
+                        whiteCollectorToggle = true;
+                        robot.collectorWhite.setPower(1);
+                    }
+                    break;
+                case "right_bumper":
+                    if (whiteCollectorToggle) {
+                        whiteCollectorToggle = false;
+                        robot.collectorWhite.setPower(0);
+                    } else {
+                        whiteCollectorToggle = true;
+                        robot.collectorWhite.setPower(-1);
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void turretOrbitControl (Gamepad gamepad, CRServo turretServo, boolean bias){
+
+        //  if either of these buttons... move the servo
+        //  turretServo1 = orange
+        if (gamepad.dpad_right || gamepad.dpad_left) {
+            if (bias) {
+                if (gamepad.dpad_right) {
+                    turretServo.setPower(-1);
+                }
+
+                if (gamepad.dpad_left) {
+                    turretServo.setPower(1);
+                }
+            }  else {
+                if (gamepad.dpad_right) {
+                    turretServo.setPower(1);
+                }
+
+                if (gamepad.dpad_left) {
+                    turretServo.setPower(-1);
+                }
+            }
+        } else {
+            turretServo.setPower(0);
+        }
     }
 }

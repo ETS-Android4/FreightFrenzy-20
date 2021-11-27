@@ -209,7 +209,7 @@ public class Robot {
     private void initCollector() {
         orangeArmBobbin = engine.hardwareMap.dcMotor.get("orangeArmBobbin");
         orangeDispenser = engine.hardwareMap.servo.get("orangeDispenser");
-        orangeArmBobbin.setDirection(DcMotorSimple.Direction.FORWARD);
+        orangeArmBobbin.setDirection(DcMotorSimple.Direction.REVERSE);
         turretServoOrange = engine.hardwareMap.crservo.get("turretServoOrange");
         orangeArmRiser = engine.hardwareMap.dcMotor.get("orangeArmRiser");
         orangeArmRiser.setDirection(DcMotorSimple.Direction.FORWARD);
