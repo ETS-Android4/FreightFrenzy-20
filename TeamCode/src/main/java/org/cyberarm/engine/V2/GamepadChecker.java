@@ -41,7 +41,10 @@ public class GamepadChecker {
         Field field = gamepad.getClass().getDeclaredField(btn);
 
         if (field.getBoolean(gamepad)) {
-          engine.buttonDown(gamepad, btn);
+          if (!buttons.get(btn)) {
+            engine.buttonDown(gamepad, btn);
+          }
+
           buttons.put(btn, true);
         } else {
           if (buttons.get(btn)) {
