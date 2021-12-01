@@ -65,6 +65,7 @@ public class Robot {
             .translation(VUFORIA_CAMERA_FORWARD_DISPLACEMENT, VUFORIA_CAMERA_LEFT_DISPLACEMENT, VUFORIA_CAMERA_VERTICAL_DISPLACEMENT)
             .multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XZY, AngleUnit.DEGREES, 90, 90, 0));
     private RobotLocation vuforiaLastLocation;
+    private Orientation orientation;
 
     // Sensors
     public BNO055IMU imu;
@@ -102,15 +103,19 @@ public class Robot {
     }
 
     public double heading() {
-        return imu.getAngularOrientation().firstAngle;
+        return orientation.firstAngle;
     }
 
     public double roll() {
-        return imu.getAngularOrientation().secondAngle;
+        return orientation.secondAngle;
     }
 
     public double pitch() {
-        return imu.getAngularOrientation().thirdAngle;
+        return orientation.thirdAngle;
+    }
+
+    public void updateRobotOrientation(){
+        orientation = imu.getAngularOrientation();
     }
 
     public void activateTensorflow() {
@@ -215,6 +220,8 @@ public class Robot {
         orangeArmRiser.setDirection(DcMotorSimple.Direction.FORWARD);
         orangeArmRiser.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         collectorOrange = engine.hardwareMap.crservo.get("collectorOrange");
+
+        orangeDispenser.setPosition(0.5);
     }
 
     private void initDepositor(){

@@ -9,6 +9,6 @@ public class RedWarehouseEngine extends CyberarmEngine {
     public void setup() {
         Robot robot = new Robot(this);
 
-        addState(new DriveState(robot, 2000, 2000,.25,.25));
+        addState(new DriveState(robot, 2000, 2000,1,1));
     }
 }

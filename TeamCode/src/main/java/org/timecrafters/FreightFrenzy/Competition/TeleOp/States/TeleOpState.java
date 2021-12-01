@@ -12,7 +12,7 @@ public class TeleOpState extends CyberarmState {
     double maxDriveSpeed, maxCollectorArmSpeed, maxDepositorArmSpeed;
     int maxArmTravelDistance, minArmTravelDistance;
     boolean armLimitToggle = false, orangeCollectorToggle = false, whiteCollectorToggle = false;
-    boolean allianceRed = true;
+    boolean allianceRedDriver1 = true, allianceRedDriver2 = true;
 
     public TeleOpState(Robot robot) {
         this.robot = robot;
@@ -48,13 +48,13 @@ public class TeleOpState extends CyberarmState {
 
         // dispenser powered
         if (engine.gamepad1.b){
-            robot.orangeDispenser.setPosition(.5);
-        }
-
-        // if not pressed dispenser off
-        else {
             robot.orangeDispenser.setPosition(0);
         }
+        // if not pressed dispenser off
+        else {
+            robot.orangeDispenser.setPosition(0.5);
+        }
+
         //  if one of triggers pressed arm extends or unextends, there is also a limit on how far arm can extend
         if (robot.orangeArmBobbin.getCurrentPosition() <= maxArmTravelDistance && engine.gamepad1.left_trigger > 0) {
 
@@ -84,7 +84,7 @@ public class TeleOpState extends CyberarmState {
         else {
             robot.turretServoOrange.setPower(0);
         }*/
-        turretOrbitControl(engine.gamepad1, robot.turretServoOrange, allianceRed);
+        turretOrbitControl(engine.gamepad1, robot.turretServoOrange, allianceRedDriver1);
 
         // if dpad verticles pressed arm rises or lowers...
         if (engine.gamepad1.dpad_up || engine.gamepad1.dpad_down) {
@@ -154,7 +154,7 @@ public class TeleOpState extends CyberarmState {
 //        else {
 //            robot.turretServoWhite.setPower(0);
 //        }
-        turretOrbitControl(engine.gamepad2, robot.turretServoWhite, allianceRed);
+        turretOrbitControl(engine.gamepad2, robot.turretServoWhite, allianceRedDriver2);
         // if dpad verticles pressed arm rises or lowers
         if (engine.gamepad2.dpad_down || engine.gamepad2.dpad_up) {
 
@@ -228,6 +228,12 @@ public class TeleOpState extends CyberarmState {
                         robot.collectorOrange.setPower(-1);
                     }
                     break;
+
+                case "guide":
+                    allianceRedDriver1 = !allianceRedDriver1;
+                    break;
+
+
             }
         }
 
@@ -251,6 +257,9 @@ public class TeleOpState extends CyberarmState {
                         whiteCollectorToggle = true;
                         robot.collectorWhite.setPower(-1);
                     }
+                    break;
+                case "guide":
+                    allianceRedDriver2 = !allianceRedDriver2;
                     break;
             }
         }
