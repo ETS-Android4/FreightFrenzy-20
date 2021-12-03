@@ -12,12 +12,12 @@ public class TurretArmExtension extends CyberarmState {
     private int targetPosition, tolerance;
     private double power;
 
-    public TurretArmExtension(Robot robot, DcMotor motor, int targetPosition, double power, int tolerance) {
+    public TurretArmExtension(Robot robot, DcMotor motor, String groupName, String actionName) {
         this.robot = robot;
         this.motor = motor;
-        this.targetPosition = targetPosition;
-        this.power = power;
-        this.tolerance = tolerance;
+        this.targetPosition = robot.configuration.variable(groupName, actionName, "targetPosition").value();
+        this.power = robot.configuration.variable(groupName, actionName, "power").value();
+        this.tolerance = robot.configuration.variable(groupName, actionName, "tolerance").value();
     }
 
     @Override
