@@ -5,14 +5,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.cyberarm.engine.V2.CyberarmState;
 import org.timecrafters.FreightFrenzy.Competition.Common.Robot;
 
-public class TurretArmExtension extends CyberarmState {
+public class TurretArmRiser extends CyberarmState {
 
     private Robot robot;
     private DcMotor motor;
     private int targetPosition, tolerance;
     private double power;
 
-    public TurretArmExtension(Robot robot, DcMotor motor, int targetPosition, double power, int tolerance) {
+    public TurretArmRiser(Robot robot, DcMotor motor, int targetPosition, double power, int tolerance) {
         this.robot = robot;
         this.motor = motor;
         this.targetPosition = targetPosition;
