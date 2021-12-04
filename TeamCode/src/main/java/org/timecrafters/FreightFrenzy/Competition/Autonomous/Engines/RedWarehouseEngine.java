@@ -12,14 +12,14 @@ public class RedWarehouseEngine extends CyberarmEngine {
     public void setup() {
         Robot robot = new Robot(this);
 
-        addState(new TurretOrbit(robot, robot.turretServoWhite, "autonomous", "01_0"));
-        addState(new TurretArmExtension(robot, robot.whiteArmBobbin, "autonomous", "02_0"));
-        addState(new DepositorDoor(robot, robot.whiteDispenser, "autonomous", "03_0"));
-        addState(new DepositorDoor(robot, robot.whiteDispenser, "autonomous", "04_0"));
-        addState(new TurretArmExtension(robot, robot.whiteArmBobbin, "autonomous", "05_0"));
-        addState(new TurretOrbit(robot, robot.turretServoWhite, "autonomous", "01_0"));
-        addState(new DriveState(robot, 1500, 500, 1, .75));
-        addState(new DriveState(robot, 1500, 1500, 1, 1));
+        addState(new TurretOrbit(robot, robot.turretServoWhite, "RedWarehouseAutonomous", "01_0"));
+        addState(new TurretArmExtension(robot, robot.whiteArmBobbin, "RedWarehouseAutonomous", "02_0"));
+        addState(new DepositorDoor(robot, robot.whiteDispenser, "RedWarehouseAutonomous", "03_0"));
+        addState(new DepositorDoor(robot, robot.whiteDispenser, "RedWarehouseAutonomous", "04_0"));
+        addState(new TurretArmExtension(robot, robot.whiteArmBobbin, "RedWarehouseAutonomous", "05_0"));
+        addState(new TurretOrbit(robot, robot.turretServoWhite, "RedWarehouseAutonomous", "06_0"));
+        addState(new DriveState(robot,"RedWarehouseAutonomous", "07_0"));
+        addState(new DriveState(robot, "RedWarehouseAutonomous", "08_0"));
 
     }
 }

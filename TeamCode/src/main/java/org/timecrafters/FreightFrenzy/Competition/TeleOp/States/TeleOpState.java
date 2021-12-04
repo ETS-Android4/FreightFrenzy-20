@@ -90,11 +90,11 @@ public class TeleOpState extends CyberarmState {
         if (engine.gamepad1.dpad_up || engine.gamepad1.dpad_down) {
 
             if (engine.gamepad1.dpad_up) {
-                robot.orangeArmRiser.setPower(1);
+                robot.orangeArmRiser.setPower(0.8);
             }
 
             if (engine.gamepad1.dpad_down) {
-                robot.orangeArmRiser.setPower(-1);
+                robot.orangeArmRiser.setPower(-0.5);
             }
         }
         // nothing pressed nothing move...
@@ -159,11 +159,11 @@ public class TeleOpState extends CyberarmState {
         if (engine.gamepad2.dpad_down || engine.gamepad2.dpad_up) {
 
             if (engine.gamepad2.dpad_up) {
-                robot.whiteArmRiser.setPower(-1);
+                robot.whiteArmRiser.setPower(8);
             }
 
             if (engine.gamepad2.dpad_down) {
-                robot.whiteArmRiser.setPower(1);
+                robot.whiteArmRiser.setPower(-0.5);
             }
         }
         // nothing pressed nothing move...
@@ -246,7 +246,7 @@ public class TeleOpState extends CyberarmState {
                         robot.collectorWhite.setPower(0);
                     } else {
                         whiteCollectorToggle = true;
-                        robot.collectorWhite.setPower(1);
+                        robot.collectorWhite.setPower(-1);
                     }
                     break;
                 case "right_bumper":
@@ -255,7 +255,7 @@ public class TeleOpState extends CyberarmState {
                         robot.collectorWhite.setPower(0);
                     } else {
                         whiteCollectorToggle = true;
-                        robot.collectorWhite.setPower(-1);
+                        robot.collectorWhite.setPower(1);
                     }
                     break;
                 case "guide":

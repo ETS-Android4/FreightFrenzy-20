@@ -9,12 +9,12 @@ public class DriveState extends CyberarmState {
     Robot robot;
     double distanceLeft, distanceRight, powerLeft, powerRight;
 
-    public DriveState(Robot robot, double distanceLeft, double distanceRight, double powerLeft, double powerRight) {
+    public DriveState(Robot robot, String groupName, String actionName) {
         this.robot = robot;
-        this.distanceLeft = distanceLeft;
-        this.distanceRight = distanceRight;
-        this.powerLeft = powerLeft;
-        this.powerRight = powerRight;
+        this.distanceLeft = robot.configuration.variable(groupName, actionName, "distanceLeft").value();
+        this.distanceRight = robot.configuration.variable(groupName, actionName, "distanceRight").value();
+        this.powerLeft = robot.configuration.variable(groupName, actionName, "powerLeft").value();
+        this.powerRight = robot.configuration.variable(groupName, actionName, "powerRight").value();
     }
 
     @Override

@@ -1,5 +1,5 @@
 package org.timecrafters.FreightFrenzy.Competition.TeleOp.Engines;
-
+//adb connect 192.168.43.1
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.cyberarm.engine.V2.CyberarmEngine;
