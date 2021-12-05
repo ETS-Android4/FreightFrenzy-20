@@ -4,32 +4,38 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.cyberarm.engine.V2.CyberarmState;
+import org.timecrafters.FreightFrenzy.Competition.Common.Robot;
 
 public class CollectorToggle extends CyberarmState {
     final static public int MODE_REVERSE = -1;
     final static public int MODE_COLLECT = 1;
     final static public int MODE_STOPPED = 0;
-
+    double time;
     CRServo servo;
-    int mode;
+    int power;
 
-    public CollectorToggle(CRServo servo, int mode) {
+    public CollectorToggle(Robot robot, CRServo servo, String groupName, String actionName) {
         this.servo = servo;
-        this.mode = mode;
+        this.power = robot.configuration.variable(groupName, actionName, "power").value();
+        this.time = robot.configuration.variable(groupName, actionName, "time").value();
+
     }
 
     @Override
     public void exec() {
-        if (mode == MODE_REVERSE){
-            servo.setPower(-1);
-        }
+        servo.setPower(power);
 
-        else if (mode == MODE_COLLECT){
-            servo.setPower(1);
-        }
+        if (runTime() >= time){
 
-        else {
             servo.setPower(0);
+
+            setHasFinished(true);
         }
+    }
+
+    @Override
+    public void telemetry() {
+        engine.telemetry.addData("runtime", runTime());
+        engine.telemetry.addData("time", time);
     }
 }

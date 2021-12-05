@@ -7,7 +7,8 @@ import org.timecrafters.FreightFrenzy.Competition.Common.Robot;
 
 public class DriveState extends CyberarmState {
     Robot robot;
-    double distanceLeft, distanceRight, powerLeft, powerRight;
+    int distanceLeft, distanceRight;
+    double powerLeft, powerRight;
 
     public DriveState(Robot robot, String groupName, String actionName) {
         this.robot = robot;
@@ -32,7 +33,8 @@ public class DriveState extends CyberarmState {
 
     @Override
     public void exec() {
-        if (Math.abs(robot.driveGoalLeft.getCurrentPosition()) >= distanceLeft && Math.abs(robot.driveGoalRight.getCurrentPosition()) >= distanceRight) {
+        if (Math.abs(robot.driveGoalLeft.getCurrentPosition()) >= distanceLeft &&
+                Math.abs(robot.driveGoalRight.getCurrentPosition()) >= distanceRight) {
             robot.driveGoalLeft.setPower(0);
             robot.driveGoalRight.setPower(0);
             robot.driveWarehouseRight.setPower(0);
@@ -45,6 +47,15 @@ public class DriveState extends CyberarmState {
             robot.driveWarehouseLeft.setPower(powerLeft);
 
         }
+
+
     }
 
+    @Override
+    public void telemetry() {
+        engine.telemetry.addData("distance left", distanceLeft);
+        engine.telemetry.addData("distance right", distanceRight);
+        engine.telemetry.addData("power left", powerLeft);
+        engine.telemetry.addData("power Right", powerRight);
+    }
 }

@@ -68,22 +68,6 @@ public class TeleOpState extends CyberarmState {
 
         }
 
-        //  if either of these buttons... move the servo
-        //  turretServo1 = orange
-        /*if (engine.gamepad1.dpad_right || engine.gamepad1.dpad_left) {
-
-            if (engine.gamepad1.dpad_right) {
-                robot.turretServoOrange.setPower(-1);
-            }
-
-            if (engine.gamepad1.dpad_left) {
-                robot.turretServoOrange.setPower(1);
-            }
-        }
-        //  if neither of these buttons... power off
-        else {
-            robot.turretServoOrange.setPower(0);
-        }*/
         turretOrbitControl(engine.gamepad1, robot.turretServoOrange, allianceRedDriver1);
 
         // if dpad verticles pressed arm rises or lowers...
@@ -138,22 +122,7 @@ public class TeleOpState extends CyberarmState {
             robot.whiteDispenser.setPosition(0);
         }
 
-        //  if either of these buttons move the servo
-        //  turretServo2 = white
-//        if (engine.gamepad2.dpad_right || engine.gamepad2.dpad_left) {
-//
-//            if (engine.gamepad2.dpad_right) {
-//                robot.turretServoWhite.setPower(-1);
-//            }
-//
-//            if (engine.gamepad2.dpad_left) {
-//                robot.turretServoWhite.setPower(1);
-//            }
-//        }
-//        //  if neither of these buttons power off
-//        else {
-//            robot.turretServoWhite.setPower(0);
-//        }
+
         turretOrbitControl(engine.gamepad2, robot.turretServoWhite, allianceRedDriver2);
         // if dpad verticles pressed arm rises or lowers
         if (engine.gamepad2.dpad_down || engine.gamepad2.dpad_up) {
@@ -175,13 +144,31 @@ public class TeleOpState extends CyberarmState {
 
     @Override
     public void telemetry() {
-        engine.telemetry.addData("white arm extension", robot.whiteArmBobbin.getCurrentPosition());
-        engine.telemetry.addData("orange arm extension", robot.orangeArmBobbin.getCurrentPosition());
-
         engine.telemetry.addData("arm limit toggle", armLimitToggle);
-        engine.telemetry.addData("collector toggle orange", orangeCollectorToggle);
-        engine.telemetry.addData("collector toggle white", whiteCollectorToggle);
+        engine.telemetry.addData("driver A turret inverted", allianceRedDriver1);
+        engine.telemetry.addData("driver B turret inverted", allianceRedDriver2);
+        engine.telemetry.addLine();
 
+        engine.telemetry.addData("white arm extension", robot.whiteArmBobbin.getCurrentPosition());
+        engine.telemetry.addData("White Riser Arm", robot.whiteArmRiser.getCurrentPosition());
+        engine.telemetry.addData("white collector toggle ", whiteCollectorToggle);
+        engine.telemetry.addData("white Turret Switch", robot.whiteMag.isPressed());
+        engine.telemetry.addData("white Turret orbit Power", robot.turretServoWhite.getPower());
+        engine.telemetry.addData("White Door Position", robot.whiteDispenser.getPosition());
+        engine.telemetry.addLine();
+
+        engine.telemetry.addData("Orange Riser Arm", robot.orangeArmRiser.getCurrentPosition());
+        engine.telemetry.addData("orange arm extension", robot.orangeArmBobbin.getCurrentPosition());
+        engine.telemetry.addData("orange collector toggle ", orangeCollectorToggle);
+        engine.telemetry.addData("orange Turret Switch", robot.orangeMag.isPressed());
+        engine.telemetry.addData("orange Turret Orbit Power", robot.turretServoOrange.getPower());
+        engine.telemetry.addData("Orange Door Position", robot.orangeDispenser.getPosition());
+        engine.telemetry.addLine();
+
+        engine.telemetry.addData("driveWarehouseLeft", robot.driveWarehouseLeft.getCurrentPosition());
+        engine.telemetry.addData("driveWarehouseRight", robot.driveWarehouseRight.getCurrentPosition());
+        engine.telemetry.addData("driveGoalLeft", robot.driveGoalLeft.getCurrentPosition());
+        engine.telemetry.addData("driveGoalRight", robot.driveGoalRight.getCurrentPosition());
     }
 
     @Override

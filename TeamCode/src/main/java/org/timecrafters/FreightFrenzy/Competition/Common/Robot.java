@@ -6,6 +6,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -69,6 +70,8 @@ public class Robot {
 
     // Sensors
     public BNO055IMU imu;
+    public RevTouchSensor whiteMag;
+    public RevTouchSensor orangeMag;
 
     // Drivetrain
     public static final double WHEEL_CIRCUMFERENCE = Math.PI * 8;
@@ -90,7 +93,7 @@ public class Robot {
 
     public Robot(CyberarmEngine engine) {
         this.engine = engine;
-
+        initMagnetSwitches();
         initConfiguration();
         initBlinkin();
         initIMU();
@@ -100,6 +103,11 @@ public class Robot {
         initCarousel();
 //        initVuforia();
 //        initTensorflow();
+    }
+
+    private void initMagnetSwitches() {
+        whiteMag = engine.hardwareMap.get(RevTouchSensor.class, "whiteMag");
+        orangeMag = engine.hardwareMap.get(RevTouchSensor.class, "orangeMag");
     }
 
     public double heading() {

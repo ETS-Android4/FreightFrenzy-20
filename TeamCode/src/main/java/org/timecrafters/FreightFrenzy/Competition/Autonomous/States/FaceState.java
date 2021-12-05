@@ -1,5 +1,7 @@
 package org.timecrafters.FreightFrenzy.Competition.Autonomous.States;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 import org.cyberarm.engine.V2.CyberarmState;
 import org.timecrafters.FreightFrenzy.Competition.Common.Robot;
 
@@ -11,6 +13,19 @@ public class FaceState extends CyberarmState {
         this.faceDirection = faceDirection;
         this.tolerance = tolerance;
         this.power = power;
+    }
+
+    @Override
+    public void start() {
+        robot.driveGoalLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.driveGoalRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.driveWarehouseLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.driveWarehouseRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.driveGoalLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.driveGoalRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.driveWarehouseLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.driveWarehouseRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     @Override
