@@ -88,10 +88,12 @@ public class TeleOpState extends CyberarmState {
 
         // button x pressed carousel wheel move.
 
-        if (engine.gamepad1.x){
+        if (engine.gamepad2.x){
+            robot.carouselWheel.setPower(0.5);
+        }
+        else if (engine.gamepad2.a){
             robot.carouselWheel.setPower(1);
         }
-
         else {
             robot.carouselWheel.setPower(0);
         }
