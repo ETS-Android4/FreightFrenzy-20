@@ -49,6 +49,8 @@ import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -410,6 +412,12 @@ public class FtcRobotControllerActivity extends Activity
     checkPreferredChannel();
 
     AnnotatedHooksClassFilter.getInstance().callOnCreateMethods(this);
+
+    /* REV CONTROL HUB APPEARS TO PREVENT ANY APP NOT ON ITS WHITELIST FROM USING ON_BOOT_COMPLETED RECEIVERS */
+    /* USING THIS HACK DUE TO THAT...                                                                         */
+    Intent tacnetIntent = new Intent("org.timecrafters.TimeCraftersConfigurationTool.tacnet.ACTION_START_SERVER");
+    tacnetIntent.setPackage("org.timecrafters.TimeCraftersConfigurationTool");
+    ContextCompat.startForegroundService(context, tacnetIntent);
   }
 
   protected UpdateUI createUpdateUI() {
