@@ -85,8 +85,8 @@ public class TensorFlowCheck extends CyberarmState {
 
              setHasFinished(true);
          }
-    }
 
+    }
     @Override
     public void telemetry() {
         engine.telemetry.addData("Chosen Path", path);

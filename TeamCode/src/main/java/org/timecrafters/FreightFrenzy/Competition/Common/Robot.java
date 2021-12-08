@@ -101,8 +101,8 @@ public class Robot {
         initCollector();
         initDepositor();
         initCarousel();
-//        initVuforia();
-//        initTensorflow();
+        initVuforia();
+        initTensorflow();
     }
 
     private void initMagnetSwitches() {
