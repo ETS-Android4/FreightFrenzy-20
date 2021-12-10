@@ -47,7 +47,7 @@ public class TeleOpState extends CyberarmState {
         robot.driveGoalRight.setPower(-engine.gamepad1.right_stick_y * maxDriveSpeed);
 
         // dispenser powered
-        if (engine.gamepad1.b){
+        if (engine.gamepad1.a){
             robot.orangeDispenser.setPosition(0);
         }
         // if not pressed dispenser off
@@ -86,13 +86,13 @@ public class TeleOpState extends CyberarmState {
             robot.orangeArmRiser.setPower(0);
         }
 
-        // button x pressed carousel wheel move.
+        // button x pressed carousel wheel move, for blue side, if b pressed wheel spins for red side;
 
         if (engine.gamepad2.x){
-            robot.carouselWheel.setPower(0.5);
-        }
-        else if (engine.gamepad2.a){
             robot.carouselWheel.setPower(1);
+        }
+        else if (engine.gamepad2.b){
+            robot.carouselWheel.setPower(-1);
         }
         else {
             robot.carouselWheel.setPower(0);
