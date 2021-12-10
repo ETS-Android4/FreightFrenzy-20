@@ -7,12 +7,11 @@ import org.timecrafters.FreightFrenzy.Competition.Autonomous.States.CollectorTog
 import org.timecrafters.FreightFrenzy.Competition.Autonomous.States.DriveState;
 import org.timecrafters.FreightFrenzy.Competition.Autonomous.States.TensorFlowState;
 import org.timecrafters.FreightFrenzy.Competition.Autonomous.States.TurretArmExtension;
-import org.timecrafters.FreightFrenzy.Competition.Autonomous.States.TurretArmRiser;
 import org.timecrafters.FreightFrenzy.Competition.Autonomous.States.TurretOrbit;
 import org.timecrafters.FreightFrenzy.Competition.Common.Robot;
 
-@Autonomous (name = "Blue WareHouse", group = "blue")
-public class BlueWarehouseEngine extends CyberarmEngine {
+@Autonomous (name = "Blue Duck Autonomous", group = "blue")
+public class BlueDuckEngine extends CyberarmEngine {
     Robot robot;
 
     @Override
@@ -20,18 +19,18 @@ public class BlueWarehouseEngine extends CyberarmEngine {
         this.robot = new Robot(this);
         robot.resetEncoders();
 
-        addState(new TurretOrbit(robot, robot.turretServoOrange, robot.orangeMag, "BlueWarehouseAutonomous", "01_0"));
-        addState(new TensorFlowState(robot, robot.orangeArmRiser, robot.orangeArmBobbin, "BlueWarehouseAutonomous", "01_1"));
-//        addState(new TurretArmExtension(robot, robot.orangeArmBobbin, "RedWarehouseAutonomous", "02_0"));
-//        addState(new TurretArmRiser(robot, robot.orangeArmRiser, "RedWarehouseAutonomous", "03_0_middle"));
-//        addState(new TurretArmExtension(robot, robot.orangeArmBobbin, "RedWarehouseAutonomous", "04_0"));
-        addState(new CollectorToggle(robot, robot.collectorOrange, "BlueWarehouseAutonomous", "05_0"));
-        addState(new CollectorToggle(robot, robot.collectorOrange, "BlueWarehouseAutonomous", "06_0"));
-        addState(new TurretArmExtension(robot, robot.orangeArmBobbin, "BlueWarehouseAutonomous", "07_0"));
-        addState(new DriveState(robot,"BlueWarehouseAutonomous", "08_0"));
-        addState(new DriveState(robot, "BlueWarehouseAutonomous", "09_0"));
-        addState(new TurretOrbit(robot, robot.turretServoOrange, null, "BlueWarehouseAutonomous", "10_0"));
-        addState(new DriveState(robot, "BlueWarehouseAutonomous", "10_1"));
+        addState(new TurretOrbit(robot, robot.turretServoWhite, robot.whiteMag, "BlueDuckAutonomous", "01_0"));
+        addState(new TensorFlowState(robot, robot.whiteArmRiser, robot.whiteArmBobbin, "BlueDuckAutonomous", "01_1"));
+//        addState(new TurretArmExtension(robot, robot.whiteArmBobbin, "RedWarehouseAutonomous", "02_0"));
+//        addState(new TurretArmRiser(robot, robot.whiteArmRiser, "RedWarehouseAutonomous", "03_0_middle"));
+//        addState(new TurretArmExtension(robot, robot.whiteArmBobbin, "RedWarehouseAutonomous", "04_0"));
+        addState(new CollectorToggle(robot, robot.collectorWhite, "BlueDuckAutonomous", "05_0"));
+        addState(new CollectorToggle(robot, robot.collectorWhite, "BlueDuckAutonomous", "06_0"));
+        addState(new TurretArmExtension(robot, robot.whiteArmBobbin, "BlueDuckAutonomous", "07_0"));
+        addState(new DriveState(robot,"BlueDuckAutonomous", "08_0"));
+        addState(new DriveState(robot, "BlueDuckAutonomous", "09_0"));
+        addState(new TurretOrbit(robot, robot.turretServoWhite, null, "BlueDuckAutonomous", "10_0"));
+        addState(new DriveState(robot, "BlueDuckAutonomous", "10_1"));
 
     }
 

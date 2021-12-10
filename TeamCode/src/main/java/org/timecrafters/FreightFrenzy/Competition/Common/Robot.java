@@ -274,6 +274,18 @@ public class Robot {
         }
     }
 
+    public void  resetEncoders(){
+        orangeArmBobbin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        whiteArmBobbin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        orangeArmRiser.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        whiteArmRiser.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        orangeArmBobbin.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        whiteArmBobbin.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        orangeArmRiser.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        whiteArmRiser.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
     private void initTensorflow() {
         int tfodMonitorViewId = engine.hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", engine.hardwareMap.appContext.getPackageName());

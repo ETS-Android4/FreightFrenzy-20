@@ -12,7 +12,7 @@ public class CollectorToggle extends CyberarmState {
     final static public int MODE_STOPPED = 0;
     double time;
     CRServo servo;
-    int power;
+    double power;
 
     public CollectorToggle(Robot robot, CRServo servo, String groupName, String actionName) {
         this.servo = servo;

@@ -21,12 +21,6 @@ public class TurretArmRiser extends CyberarmState {
     }
 
     @Override
-    public void start() {
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
-
-    @Override
     public void exec() {
         if (motor.getCurrentPosition() < targetPosition - tolerance){
             motor.setPower(power);

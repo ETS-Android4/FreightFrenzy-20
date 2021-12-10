@@ -15,6 +15,8 @@ public class TensorFlowState extends CyberarmState {
     private double checkTime;
     private int manualPath;
     private int path = 0;
+    private double leftDuck;
+    private double middleDuck;
 
     private String groupName;
     private DcMotor armRiser, armExtension;
@@ -24,6 +26,8 @@ public class TensorFlowState extends CyberarmState {
         this.groupName = groupName;
         this.armRiser = armRiser;
         this.armExtension = armExtension;
+        this.leftDuck = robot.configuration.variable(groupName, actionName, "leftDuck").value();
+        this.middleDuck = robot.configuration.variable(groupName, actionName, "middleDuck").value();
     }
 
     @Override
@@ -35,7 +39,7 @@ public class TensorFlowState extends CyberarmState {
     @Override
     public void exec() {
         recognitions = robot.tensorflowDetections();
-//
+
         if (runTime() < checkTime) {
             if (manualPath != -1) {
 
@@ -43,12 +47,10 @@ public class TensorFlowState extends CyberarmState {
                     if (recognitions.size() == 1) {
                         Recognition recognition = recognitions.get(0);
 
-                        if (recognition.getLabel().equals("duck")){
-                            if (recognition.getLeft() < 320) {
-                                path = 0;
-                            } else {
-                                path = 1;
-                            }
+                        if (recognition.getLeft() < leftDuck) {
+                            path = 0;
+                        } else {
+                            path = 1;
                         }
                     } else {
                         path = 2;
@@ -70,7 +72,7 @@ public class TensorFlowState extends CyberarmState {
                 addState(new TurretArmExtension(robot, armExtension, groupName, "04_0_top"));
             }
 
-            setHasFinished(true);
+          setHasFinished(true);
         }
     }
 

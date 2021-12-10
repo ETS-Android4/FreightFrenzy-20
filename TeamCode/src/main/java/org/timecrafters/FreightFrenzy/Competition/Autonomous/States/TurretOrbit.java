@@ -24,7 +24,7 @@ public class TurretOrbit extends CyberarmState {
 
     @Override
     public void exec() {
-  if (magnetSwitch.isPressed() || runTime() < time ){
+  if ((magnetSwitch != null && magnetSwitch.isPressed()) || runTime() > time ){
       servo.setPower(0);
       setHasFinished(true);
   }

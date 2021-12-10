@@ -18,6 +18,7 @@ public class RedWarehouseEngine extends CyberarmEngine {
     @Override
     public void setup() {
         this.robot = new Robot(this);
+        robot.resetEncoders();
 
         addState(new TurretOrbit(robot, robot.turretServoWhite, robot.whiteMag, "RedWarehouseAutonomous", "01_0"));
         addState(new TensorFlowState(robot, robot.whiteArmRiser, robot.whiteArmBobbin, "RedWarehouseAutonomous", "01_1"));
