@@ -1,5 +1,7 @@
 package org.timecrafters.FreightFrenzy.Competition.Autonomous.States;
 
+import android.util.Log;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.cyberarm.engine.V2.CyberarmState;
@@ -13,8 +15,8 @@ public class TensorFlowState extends CyberarmState {
     Robot robot;
     private List<Recognition> recognitions;
     private double checkTime;
-    private int manualPath;
-    private int path = 0;
+    private int manualPath = 0;
+    private int path = 3;
     private double leftDuck;
     private double middleDuck;
 
@@ -28,6 +30,7 @@ public class TensorFlowState extends CyberarmState {
         this.armExtension = armExtension;
         this.leftDuck = robot.configuration.variable(groupName, actionName, "leftDuck").value();
         this.middleDuck = robot.configuration.variable(groupName, actionName, "middleDuck").value();
+        this.checkTime = robot.configuration.variable(groupName, actionName, "time").value();
     }
 
     @Override
@@ -41,23 +44,22 @@ public class TensorFlowState extends CyberarmState {
         recognitions = robot.tensorflowDetections();
 
         if (runTime() < checkTime) {
-            if (manualPath != -1) {
+            if (recognitions != null && recognitions.size() != 0) {
+                if (recognitions.size() == 1) {
+                    Recognition recognition = recognitions.get(0);
 
-                if (recognitions != null) {
-                    if (recognitions.size() == 1) {
-                        Recognition recognition = recognitions.get(0);
-
-                        if (recognition.getLeft() < leftDuck) {
-                            path = 0;
-                        } else {
-                            path = 1;
-                        }
+                    if (recognition.getLeft() < leftDuck) {
+                        path = 0;
                     } else {
-                        path = 2;
+                        path = 1;
                     }
                 }
+            } else {
+                path = 2;
             }
         } else {
+            Log.i(TAG, "Choosen path: " + path);
+
             if (path == 0){
                 addState(new TurretArmExtension(robot, armExtension, groupName, "02_0"));
                 addState(new TurretArmRiser(robot, armRiser, groupName, "03_0_bottom"));
@@ -72,17 +74,27 @@ public class TensorFlowState extends CyberarmState {
                 addState(new TurretArmExtension(robot, armExtension, groupName, "04_0_top"));
             }
 
-          setHasFinished(true);
+            setHasFinished(true);
         }
     }
 
     @Override
     public void telemetry() {
-        for (Recognition recognition : robot.tensorflowDetections()) {
+        engine.telemetry.addData("Runtime", runTime());
+        engine.telemetry.addData("Check Time", checkTime);
+        engine.telemetry.addData("Path", path);
+        engine.telemetry.addLine();
+
+        if (recognitions == null) {
+            return;
+        }
+
+        for (Recognition recognition : recognitions) {
             engine.telemetry.addData("Label", recognition.getLabel());
             engine.telemetry.addData("Left", recognition.getLeft());
             engine.telemetry.addData("Top", recognition.getTop());
             engine.telemetry.addData("Confidence", recognition.getConfidence());
+            engine.telemetry.addLine();
         }
     }
 }
