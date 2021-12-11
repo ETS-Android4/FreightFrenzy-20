@@ -88,10 +88,10 @@ public class TeleOpState extends CyberarmState {
 
         // button x pressed carousel wheel move, for blue side, if b pressed wheel spins for red side;
 
-        if (engine.gamepad2.x){
+        if (engine.gamepad2.b){
             robot.carouselWheel.setPower(1);
         }
-        else if (engine.gamepad2.a){
+        else if (engine.gamepad2.x){
             robot.carouselWheel.setPower(-1);
         }
         else {
@@ -116,7 +116,7 @@ public class TeleOpState extends CyberarmState {
 
 
         // if b is pressed then depositor door opens, if not pressed not opening.
-        if (engine.gamepad2.b){
+        if (engine.gamepad2.a){
             robot.whiteDispenser.setPosition(.5);
         }
 
