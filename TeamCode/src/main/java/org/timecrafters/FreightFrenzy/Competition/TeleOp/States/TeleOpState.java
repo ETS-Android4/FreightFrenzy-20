@@ -28,7 +28,6 @@ public class TeleOpState extends CyberarmState {
     @Override
     public void start() {
         super.start();
-        // FIXME: Don't reset when doing autonomous stuff
         robot.whiteArmBobbin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.whiteArmBobbin.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.orangeArmBobbin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -74,11 +73,11 @@ public class TeleOpState extends CyberarmState {
         if (engine.gamepad1.dpad_up || engine.gamepad1.dpad_down) {
 
             if (engine.gamepad1.dpad_up) {
-                robot.orangeArmRiser.setPower(0.8);
+                robot.orangeArmRiser.setPower(1);
             }
 
             if (engine.gamepad1.dpad_down) {
-                robot.orangeArmRiser.setPower(-0.5);
+                robot.orangeArmRiser.setPower(-1);
             }
         }
         // nothing pressed nothing move...
@@ -130,11 +129,11 @@ public class TeleOpState extends CyberarmState {
         if (engine.gamepad2.dpad_down || engine.gamepad2.dpad_up) {
 
             if (engine.gamepad2.dpad_up) {
-                robot.whiteArmRiser.setPower(8);
+                robot.whiteArmRiser.setPower(1);
             }
 
             if (engine.gamepad2.dpad_down) {
-                robot.whiteArmRiser.setPower(-0.5);
+                robot.whiteArmRiser.setPower(-1);
             }
         }
         // nothing pressed nothing move...
